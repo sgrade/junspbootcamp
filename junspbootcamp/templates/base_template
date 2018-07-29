@@ -1,0 +1,55 @@
+system {
+    root-authentication {
+        encrypted-password "$6$Dyhid5B6$REOfXbqsSWyKBluULOvEavINwOxi91XHn/FYHJ8/aGxBzJLesQTVYsW4jbLzGY2YmMR8WVorJ.jy8FZT0vTJs0"; ## SECRET-DATA
+    }
+    login {
+        user roman {
+            uid 2001;
+            class super-user;
+            authentication {
+                encrypted-password "$6$i3XHVd.F$gBHcR3A263dfiX.HWF9ZGYRIl2U.EqJRIXYAQs.srSpBoBV/7QO1jGvBgyCpBRLoY5OsxfD6Bl0IiaGDKGNaV."; ## SECRET-DATA
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAzIBP7+bkQPpmmE1UABvoQyfMuTj2b3PGncfr41s6TPz1pdn0oaqMB34qDEEimP8TBGilpMFZoJVFx7bhJWQq1ua8KKwoxnk9jjdamZi9uGho+vn2TBgnuf2un2XV0wUJp3wfVJSsHR4oYaDIlAG3t5HpJMi8mhNBotk7e4sO+1afw6/4hbufxCZLAMpVczoJrkVGGDv/Ju7AwgVp5g1psOTkoe8W+OXpXv/liBN9pZMw9wefyjPLfaNXbdgiuNFJOhRFZ58rRppkJo0r+vzG0Bi2jc7QbOoGY/OX/OfZBMgRHNBegteWojF4OYGlGpM21mPo7L4GLR+4pl265zM4ww== rsa-key-20160811"; ## SECRET-DATA
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCRMK31tnTJw8yxSceQe4s0YxlzQg1P0dweiO0uqTpHkZT+4Wa2Ep+TQeer/TCkGl/BYy1B0C0JdH5isEmMXNmWQheu4nvPAoB8pNxMBYEE/nGEzXMiUv8isnbXAmM/h04kl0vPxeqTIOQQn4CQ6BSi6If9F7URb5oYeanZOxZy0XxYGuzm/qpdEJrWoCqUdVYOX6pL5Nig8WQI7Uy4/04uZTRdjASh36b2CcKSUkx8x+gnHhpytWwzWyULEQN4tMXQvyM1zjhuCf9LmH6JrBjBnmpuaOxL9YctF8OXFTCmopxW7R1PspYlABLnEBlag780FBVIIDp/jcGMrcbLFPiv0fmCuJ0/O+gkwTmPJR5kpV3rRzg4R9UssG4K2uvV46lnKA97vNdHVy8omip3yhehObs6znznbZUd1v3ZS1UZBWKrA+tgTg+wG5jshsvZApJtAT8RtGVd9a/34ex9rLsuo7XKrdeV4l1cN6APUbZrlFsfI2oHqRjXZ21l1nJJKjipt6IWA7ucJOe1CyXjvukSuT2vZ4HpDJOpQpkR0IkTzzNUksB3TB/nhZhne0be6H+kvsgw5XKOI0hJdHAK1BBJvAERhQS9Wzr7H+pkGBsWaonGoP6lmwts94AY0h8BTFOwkXeXqWFhyuBveKx8I+YNBA3laBfQOeF/BJH9LhTzzw== roman@sandbox-desktop"; ## SECRET-DATA
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjh3aaDB5ennNgeRCgaCj+xclzWG2Vwh73RumrruTAJXA15Zo77PorKMW/eZRIpvdSeSqFr85ZrqWObhMldPfeQ0IYXOC8tHDT4uiBm2ITsKwOvSQb9B3Q0ycac/+fE75fHmrYm82b2fRa6UYjGnbJhRaigiDV0lZABAmqwtsjPPUZCzlKubf7gIfhgAVJQYEON3JpRRiQtXEnumby5YHSP01cMmRZzHmAY3nul4rchueZ2pvFDHYEl/IQlGWrZnO/LO12ujFcX+oadwLFRKZv9W9xEBzGV9+zyroHVcZ7GaNV+Uk/4c3MJr64i77zdLt3GYC6qrLm1g5n7D9Kwd09 roman@salt"; ## SECRET-DATA
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwqjnf7oiShQo2FkergLIbtc1HscMHAtWHF7Vjse1IL/X6DExPQpBdfcrqe+wcTqVS8ChSDWMor1eYA8Vo5PEDTj7JOC/OeJfPVmRyrXKsX3k67l6Y+HeKaLmkNneAnq4xipMSL86ewV+w7mJst6eXzby1cpt123qXp9Omnn15Ir9UyqEaRbGoZImGKfSbAZGwK8Q2Mt7Ja1KDAQ4F/YRdAFZZNarm6i+E42yc0pFo0s0EAk1E+XMy59x0IThsCpDPwKBYaHgPi4cW6LFYETPHkvWrkHLZUnoJ1lPbJR4kfM27N3aPbSKvnlf11Ubf8Cs0Qro2uiksQAbdjijLt7J roman@ubuntu-laptop"; ## SECRET-DATA
+            }
+        }
+    }
+    services {
+        ssh;
+        netconf {
+            ssh;
+        }
+    }
+}
+chassis {
+    fpc 0 {
+        pic 0 {
+            tunnel-services {
+                bandwidth 1g;
+            }
+            number-of-ports 14;
+        }
+        lite-mode;
+        flexible-queuing-mode;
+    }
+}
+interfaces {
+    fxp0 {
+        unit 0 {
+            family inet {
+                address IP_ADDR/24;
+            }
+        }
+    }
+}
+protocols {
+    ospf {
+        area 0.0.0.0 {
+            interface fxp0.0 {
+                disable;
+            }
+        }
+    }
+}
+
