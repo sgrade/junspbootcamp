@@ -2,7 +2,6 @@ from .yml_parser import parse_yml
 from .get_config_path import LabConfigHandler
 
 
-
 class InterfaceHandler:
 
     def __init__(self, lab, host, config):

@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import fileinput
 import shutil
 import sys
@@ -18,7 +16,7 @@ def prepare_base_config(host, ip_address):
     print('Preparing base config')
 
     work_dir = os.getcwd()
-    base_template = work_dir+'/templates/base_template'
+    base_template = work_dir+'/junspbootcamp/templates/base_template'
 
     # copy essential template to a tmp directory
     # print('Filling template with the IP address:', ip_address)

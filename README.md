@@ -13,5 +13,12 @@ You can get them with the bootcamp package.
 Configuration
 =============
 
-loader.yml 
+config.yml
 
+
+Usage
+============
+
+python3 .
+
+Note: this is the same as "python3 __main__.py" 
