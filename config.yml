@@ -1,9 +1,5 @@
-# Example:
-# If lab configs for lab 9 are located in
-# /home/roman/JS-topologies/JNCIE-SP_Bootcamp_12a_L9/configset/
-
-# Host names in lower case
-# Host names must be resolvable (e.g. via /etc/hosts)
+# Host names
+# They must be resolvable (e.g. via /etc/hosts)
 hosts:
   r1: 172.16.29.201
   r2: 172.16.29.202
@@ -12,18 +8,19 @@ hosts:
   r5: 172.16.29.205
   vrdevice: 172.16.29.209
 
+# JunOS configs directory
+# E.g. if lab configs for lab 9 are located in
+# /home/roman/JS-topologies/JNCIE-SP_Bootcamp_12a_L9/configset/
 dir:
-  # no trailing "/"
+  # Note: no trailing "/" please
   top_dir: /home/roman/JS-topologies
   subdir_level_1: JNCIE-SP_Bootcamp_12a_L
   subdir_level_2: configset
 
+# Authentication
 auth:
   user: roman
   # password or ssh?
   method: 5
   # set password to False if ssh authentication used - it will be ignored
   password: junos1
-
-# Choose library (PyEz or NAPALM) to push config
-driver: junos
