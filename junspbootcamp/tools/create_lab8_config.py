@@ -38,7 +38,7 @@ def change_interfaces(interface, content):
                 # print(content[line_index])
                 break
         except Exception as e:
-            print(e)
+            # print(e)
             continue
 
     return content
@@ -73,6 +73,7 @@ def prepare_one_config(dir, conf):
         c_lines = c.readlines()[2:]
 
         # remove "system" section
+        # print('removing "system" section')
         line_index = 0
         for line in c_lines:
             if line.startswith("}"):
@@ -82,11 +83,13 @@ def prepare_one_config(dir, conf):
         del(c_lines[:line_index+1])
 
         # remove interface descriptions as they lead to "syntax error" when committing under logical systems
+        # print("removing interface descriptions")
         for line in c_lines:
             if line.lstrip().startswith("description"):
                 c_lines.remove(line)
 
         # change interface id
+        # print("changing interface id")
         c_lines = interfaces_lab8(conf, c_lines)
 
         return "".join(c_lines)

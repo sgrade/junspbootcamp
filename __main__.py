@@ -34,13 +34,11 @@ def main():
 
         # if correct hostname is provided, loading configs only for this device
         if _host.lower() in _valid_hostnames:
-            if _host:
-                x.load_base_config(_host)
-                x.load_lab_config(_lab_number, _host)
+            x.load_one_device(_lab_number, _host.lower())
 
-            # loading configs for ALL devices
-            else:
-                x.load_all_configs(_lab_number)
+        # loading configs for ALL devices
+        else:
+            x.load_all_devices(_lab_number)
     else:
         print('Invalid input')
         sys.exit(1)

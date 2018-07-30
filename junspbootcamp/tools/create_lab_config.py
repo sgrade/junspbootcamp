@@ -7,7 +7,7 @@ def remove_unsupported(conf):
     """Removes config parts, that are not supported by vMX"""
 
     # vMX does not support the following
-    print('Removing unsupported statements')
+    # print('Removing unsupported statements')
     unsupported_statement = """security {
         forwarding-options {
             family {

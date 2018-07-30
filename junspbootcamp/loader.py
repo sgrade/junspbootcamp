@@ -90,7 +90,16 @@ class Loader:
             # load multiping.slax script
             install_script(lab, host, _user, _pass, 'multiping.slax', '/var/db/scripts/op/')
 
-    def load_all_configs(self, lab):
+    def load_one_device(self, lab, host):
+        ip = self._hosts.get(host)
+        print('')
+        print('Processing', host, 'with IP address', ip)
+        self.load_base_config(host)
+        self.load_lab_config(lab, host)
+        print('Done with', host)
+        print('======================')
+
+    def load_all_devices(self, lab):
         """
         Load configs for all devices in the lab.
 
@@ -101,15 +110,13 @@ class Loader:
         """
         hosts_sorted = sorted(self._hosts)
         hosts_done = list()
+        print('')
+        print('+++++++++++++')
+        print('Processing ALL devices:', ", ".join(hosts_sorted))
         for host in hosts_sorted:
-            ip = self._hosts.get(host)
-            print('')
-            print('Processing', host, 'with IP address', ip)
-            self.load_base_config(host)
-            self.load_lab_config(lab, host)
-            print('Done with', host)
+            self.load_one_device(lab, host)
             hosts_done.append(host)
-            print('======================')
         print('')
         print('Done with', ", ".join(hosts_done))
+        print('+++++++++++++')
         print('')
