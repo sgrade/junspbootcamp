@@ -19,6 +19,10 @@ config.yml
 Usage
 ============
 
+Change directory to where \_\_main__.py is located, then execute the directory:
+
+cd junspbootcamp    
+ 
 python3 .
 
-Note: this is the same as "python3 __main__.py" 
+Note: "python3 ." is the same as "python3 \_\_main__.py" 
