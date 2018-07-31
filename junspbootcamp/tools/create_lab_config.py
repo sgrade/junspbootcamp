@@ -52,7 +52,7 @@ def remove_unsupported(conf):
         i += 1
 
 
-def prepare_lab_config(lab, host):
+def create_lab_config(lab, host):
     """
     Creates base device config from base template.
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         _lab_number = sys.argv[1]
         _host = sys.argv[2]
-        prepare_lab_config(_lab_number, _host)
+        create_lab_config(_lab_number, _host)
     else:
         print('Please provide CLI arguments: lab number and hostname')
         print('allowed lab numbers: 1, 2, ... 11')

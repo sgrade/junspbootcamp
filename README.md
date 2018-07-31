@@ -11,13 +11,16 @@ Only vMX virtual machines' configs are provided. __JunOS configs are not provide
 # Usage
 
 1. Clone the repository
-2. __Modify config.yml__ to reflect your environment and location of JunOS configs 
-3. Change directory to where \_\_main__.py is located
-4. Execute the directory
+2. __Modify config.yml__ to reflect your environment and location of JunOS configs
+3. Install dependencies 
+4. Change directory to where \_\_main__.py is located
+5. Execute the directory
 
 ```
 git clone https://github.com/sgrade/junspbootcamp.git
-cd junspbootcamp    
+nano config.yml
+pip3 install -r requirements.txt
+cd junspbootcamp
 python3 .
 ```
 

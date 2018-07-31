@@ -1,13 +1,15 @@
 from junspbootcamp.tools.yml_parser import parse_yml
 from junspbootcamp.tools.create_base_config import prepare_base_config
-from junspbootcamp.tools.create_lab_config import prepare_lab_config
+from junspbootcamp.tools.create_lab_config import create_lab_config
 from junspbootcamp.tools.create_lab8_config import prepare_custom_config
 from junspbootcamp.tools.install_script import install_script
 from junspbootcamp.tools.load_config_pyez import load_cfg_pyez
+from junspbootcamp.tools.disable_unused_interfaces import get_interfaces
+from junspbootcamp.tools.disable_unused_interfaces import disable_unused_interfaces
 
 
 class Loader:
-    """Loads config to a network element"""
+    """Modifies and loads config(s) to vMXs"""
 
     def __init__(self):
         """Constructor"""
@@ -35,7 +37,7 @@ class Loader:
             return _base_conf_filename
         else:
             print('Cannot get management IP from loader.yml')
-            print('Ensure that hostnames in loader.yml are in lower case')
+            print('Ensure that hostnames in config.yml are in lower case')
             return None
 
     def load_base_config(self, host):
@@ -63,7 +65,7 @@ class Loader:
         :param config:
         :return:
         """
-        prepare_lab_config(lab, host)
+        create_lab_config(lab, host)
 
     def load_lab_config(self, lab, host):
         """Merges existing network element config with lab config
@@ -71,7 +73,10 @@ class Loader:
         :param int lab: lab number
         :param str host: hostname of the device
         """
-        _conf = prepare_lab_config(lab, host)
+        _conf = create_lab_config(lab, host)
+        # we want only interfaces used in the lab to be used, the rest disabled
+        interfaces_to_use = get_interfaces(_conf)
+
         _user = self._auth.get('user')
         _pass = self._auth.get('password')
         load_cfg_pyez(host, _conf, _user, _pass, mode='merge')
@@ -83,12 +88,21 @@ class Loader:
             # create custom config for the device
             configs = ['Rec1.conf', 'Rec3.conf', 'Rec4.conf']
             _conf = prepare_custom_config(lab, host, configs)
-
+            interfaces_to_use = interfaces_to_use + get_interfaces(_conf)
             # load created config to the device
             load_cfg_pyez(host, _conf, _user, _pass, mode='merge')
 
             # load multiping.slax script
             install_script(lab, host, _user, _pass, 'multiping.slax', '/var/db/scripts/op/')
+
+        #
+        try:
+            disable_unused_interfaces(host, _user, _pass, interfaces_to_use)
+        except Exception as e:
+            print('Cannot disable unused interfaces due to an error, ')
+            print('however this is not critical - you can proceed further')
+            # TO IMPLEMENT LATER - LOG THE EXCEPTION
+            print(e)
 
     def load_one_device(self, lab, host):
         ip = self._hosts.get(host)

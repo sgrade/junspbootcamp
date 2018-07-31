@@ -1,4 +1,4 @@
-!!! DON'T change anything in these configs unless you discovered an error OR want to optimize your environment and really know what you are doing!!!
+!!! DON'T change anything in these configs unless you discovered an error OR want to optimize your environment and really know what you are doing !!!
 
 vMX on KVM lab for "JNCIE Service Provider Bootcamp (JNCIE-SP-12.a)"
 

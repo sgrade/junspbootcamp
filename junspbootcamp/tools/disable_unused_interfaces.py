@@ -1,26 +1,67 @@
-from .yml_parser import parse_yml
-from .get_config_path import LabConfigHandler
+from jnpr.junos import Device
+from jnpr.junos.utils.config import Config
 
 
-class InterfaceHandler:
+def get_interfaces(config):
+    """parses device config and returns a list of interfaces used in this config"""
+    interface_list = list()
+    with open(config) as c:
+        c_lines = c.readlines()
+        line_index = 0
+        curly_braces_count = 1
+        for line in c_lines:
+            if line.lstrip().startswith("interfaces"):
+                line_index = c_lines.index(line)
+                continue
+            if line_index > 0:
+                line_index += 1
+                if curly_braces_count > 0:
+                    if line.rstrip().endswith("{"):
+                        curly_braces_count += 1
+                        if line.strip().split('-')[0] == 'ge':
+                            interface_list.append(line.strip().split(' ')[0])
+                    elif line.rstrip().endswith("}"):
+                        curly_braces_count -= 1
+                else:
+                    # there might be several "interfaces" sections in the config
+                    # e.g. in case we use logical systems
+                    if line_index < len(c_lines):
+                        curly_braces_count = 1
+                        continue
+                    else:
+                        break
+    return interface_list
 
-    def __init__(self, lab, host, config):
-        """parse loader config"""
 
-        parsed_loader_yml = parse_yml()
-        self.lab = lab
-        self.host = host
-        self.config = config
-        self.dir = LabConfigHandler(lab, host)
+def get_number_of_ports():
+    """returns int number-of-ports from the template"""
+    with open('junspbootcamp/templates/base_template') as t:
+        t_lines = t.readlines()
+        for line in t_lines:
+            if line.strip().startswith('number-of-ports'):
+                return int(line.strip().split(' ')[1][:-1])
 
-    def get_used_interfaces(self):
-        """parse device config and return a list of interfaces used in the lab"""
-        pass
 
-    def get_all_interfaces(self):
-        """connects to a device and gets complete interface list"""
-        pass
+def disable_unused_interfaces(host, _user, _pass, interface_list):
+    """ Disables interfaces, which are not used in the lab"""
 
-    def filter_ge_interfaces(self):
-        """gets interface list and returns list of ge (Gigabit Ethernet) interfaces"""
-        pass
+    print("Disabling interfaces, which are not used in the lab")
+
+    number_of_ports = get_number_of_ports()
+
+    dev = Device(host).open()
+    with Config(dev) as cu:
+        i = 0
+        while i < number_of_ports:
+            interface = 'ge-0/0/' + str(i)
+            interface_disable_string = 'set interfaces ' + interface + ' disable'
+            if interface in interface_list:
+                i += 1
+                continue
+            else:
+                cu.load(interface_disable_string, format='set')
+                i += 1
+        # cu.pdiff()
+        cu.commit()
+
+    dev.close()
