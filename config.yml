@@ -20,7 +20,7 @@ dir:
 # Authentication
 auth:
   user: roman
-  # password or ssh?
-  method: 5
-  # set password to False if ssh authentication used - it will be ignored
-  password: junos1
+  # password or key?
+  method: key
+  # set password to False if key authentication used - it will be ignored
+  password: False

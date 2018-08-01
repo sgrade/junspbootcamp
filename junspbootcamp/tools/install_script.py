@@ -29,24 +29,12 @@ def install_script(lab, host, user, password, script, path):
     local_path = LabConfigHandler(lab, host).lab_dir
     f = str(local_path + '/' + script)
     try:
-        dev.open()
-
         # Default progress messages
         with SCP(dev, progress=True) as scp1:
             scp1.put(f, remote_path=path)
 
     except Exception as err:
-        print (err)
+        print(err)
         return
     else:
         dev.close()
-
-
-if __name__ == "__main__":
-    lab_number = 8
-    hostname = 'vrdevice'
-    username = 'roman'
-    password = 'junos1'
-    script = 'multiping.slax'
-    path = '/var/db/scripts/op/'
-    install_script(lab_number, hostname, username, password, script, path)
