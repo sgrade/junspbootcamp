@@ -25,6 +25,9 @@ class Loader:
         else:
             self._pass = False
 
+    def prepare_environment(self):
+        pass
+
     def _create_base_config(self, host):
         """Creates base config from the template
 

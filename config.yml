@@ -1,4 +1,8 @@
-# Host names
+# Server, where virtual machines are installed
+server:
+  ip-address: 172.16.29.1
+
+# Virtual machines' (vMXs') names
 # They must be resolvable (e.g. via /etc/hosts)
 hosts:
   r1: 172.16.29.201
