@@ -26,11 +26,12 @@ def main():
         print('Hostname (r1, r2, r3, r4, r5, vrdevice) to config ONE device OR')
         _host = input('press Enter to config ALL devices: ')
 
+    """    
     # Preparing the environment
     env = Environment()
     print(env.server)
-
     """
+
     # Loading lab (JunOS) configs
     # first script parameter (lab number) should be 1 to 11
     if 1 <= int(_lab_number) <= 11:
@@ -49,7 +50,7 @@ def main():
     else:
         print('Invalid input')
         sys.exit(1)
-    """
+
 
 if __name__ == '__main__':
     main()

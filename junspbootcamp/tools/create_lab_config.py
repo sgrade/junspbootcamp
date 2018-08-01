@@ -35,7 +35,11 @@ def remove_unsupported(conf):
             c_lines_stripped = [line.strip() for line in c_lines]
 
             try:
-                start_index = c_lines_stripped.index("security {")
+                first_row = unsupported_statement.split('\n')[0]
+                # print(first_row)
+
+                # start_index = c_lines_stripped.index("security {")
+                start_index = c_lines_stripped.index(first_row)
                 section_length = len(unsupported_statement.split('\n'))
                 end_index = start_index + section_length
 

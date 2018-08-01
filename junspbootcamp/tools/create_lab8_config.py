@@ -47,12 +47,15 @@ def change_interfaces(interface, content):
 def interfaces_lab8(conf, content):
     """Specifies interface ids for the config files"""
     interface_number = 0
+
     if conf == 'Rec1.conf':
         interface_number = 2
     elif conf == 'Rec3.conf':
         interface_number = 4
     elif conf == 'Rec4.conf':
         interface_number = 5
+    elif conf == 'Rec2.conf':
+        interface_number = 9
 
     if interface_number == 0:
         return content
@@ -60,10 +63,23 @@ def interfaces_lab8(conf, content):
         return change_interfaces(interface_number, content)
 
 
+def rec2_processing(lines):
+    print(lines)
+    return lines
+
+
 def prepare_one_config(dir, conf):
     """Processes one config file"""
 
-    config_path = str(dir+'/'+conf)
+    if conf == 'Rec2.conf':
+        # Special case!
+        # There is no config for Rec2 in the bootcamp package as it is implemented on vrdevice
+        # However, as Rec2 does not function properly on vrdevice
+        # (does not send IGMP v2 reports for 224.2.2.2), we make it manually from Rec3.conf
+        # AND don't forget to exclude same statements from "Rec2-vr.conf"
+        config_path = str(dir + '/' + 'Rec3.conf')
+    else:
+        config_path = str(dir + '/' + conf)
     # print('processing config: ', config_path)
 
     with open(config_path, 'r') as c:
@@ -92,7 +108,15 @@ def prepare_one_config(dir, conf):
         # print("changing interface id")
         c_lines = interfaces_lab8(conf, c_lines)
 
-        return "".join(c_lines)
+        content = "".join(c_lines)
+
+        # Special case!
+        # See details above
+        if conf == 'Rec2.conf':
+            content = content.replace('172.27.1.3', '172.27.1.2')
+            content = content.replace('224.3.3.3', '224.2.2.2')
+
+        return content
 
 
 def prepare_custom_config(lab, host, configs):

@@ -89,7 +89,7 @@ class Loader:
         # lab 8 (Multicast) requires additional devices as multicast receivers
         if lab == str(8) and host == 'vrdevice':
             # create custom config for the device
-            configs = ['Rec1.conf', 'Rec3.conf', 'Rec4.conf']
+            configs = ['Rec1.conf', 'Rec3.conf', 'Rec4.conf', 'Rec2.conf']
             _conf = prepare_custom_config(lab, host, configs)
             interfaces_to_use = interfaces_to_use + get_interfaces(_conf)
             # load created config to the device
