@@ -2,8 +2,40 @@ import sys
 from .get_config_path import LabConfigHandler
 from .create_lab_config import remove_unsupported
 
-"""Creates custom config for lab8
 
+def customize_lab8_config(tmp_file):
+    """Removes lines related to Rec2"""
+
+    with open(tmp_file, 'r+') as f:
+        f_lines = f.readlines()
+        for line in f_lines:
+            if line.strip().split(' ')[0] == 'ge-0/0/9':
+                line_index = f_lines.index(line)
+                del(f_lines[line_index:line_index + 8])
+                break
+        for line in f_lines:
+            if line.strip().split(' ')[0] == 'routing-options':
+                line_index = f_lines.index(line)
+                del(f_lines[line_index:line_index + 5])
+                break
+        for line in f_lines:
+            if line.strip().split(' ')[0] == 'protocols':
+                line_index = f_lines.index(line)
+                del(f_lines[line_index:line_index + 14])
+                break
+        for line in f_lines:
+            if line.strip().split(' ')[0] == 'policy-options':
+                line_index = f_lines.index(line)
+                del(f_lines[line_index:line_index + 13])
+                break
+        content = "".join(f_lines)
+        f.seek(0)
+        f.truncate()
+        f.write(content)
+    return tmp_file
+
+
+"""Creates custom config for lab8
 Original configs from the bootcamp are designed for separate routers
 This script allows avoid creating separate routers 
 Instead it creates config file for vrdevice with several logical systems
@@ -61,11 +93,6 @@ def interfaces_lab8(conf, content):
         return content
     else:
         return change_interfaces(interface_number, content)
-
-
-def rec2_processing(lines):
-    print(lines)
-    return lines
 
 
 def prepare_one_config(dir, conf):
@@ -151,14 +178,4 @@ def prepare_custom_config(lab, host, configs):
     return tmp_file
 
 
-if __name__ == "__main__":
-    # create_lab_config(lab_number, hostname)
-    if len(sys.argv) > 3:
-        _lab_number = sys.argv[1]
-        _host = sys.argv[2]
-        prepare_custom_config(_lab_number, _host, sys.argv[3:])
-    else:
-        print('Please provide CLI arguments: ')
-        print('lab number, hostname/IP, config1, config2, ..., configN')
-        print('allowed lab numbers: 1, 2, ... 11')
-        print('allowed host names: r1, r2, r3, r4, r5, vrdevice')
+

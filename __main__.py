@@ -41,7 +41,7 @@ def main():
         _valid_hostnames = ['r1', 'r2', 'r3', 'r4', 'r5', 'vr', 'vrdevice']
 
         # if correct hostname is provided, loading configs only for this device
-        if _host.lower() in _valid_hostnames:
+        if _host and _host.lower() in _valid_hostnames:
             ldr.load_one_device(_lab_number, _host.lower())
 
         # loading configs for ALL devices
