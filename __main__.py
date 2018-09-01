@@ -45,8 +45,13 @@ def main():
             ldr.load_one_device(_lab_number, _host.lower())
 
         # loading configs for ALL devices
-        else:
+        elif not _host:
             ldr.load_all_devices(_lab_number)
+
+        else:
+            print('Invalid input')
+            sys.exit(1)
+
     else:
         print('Invalid input')
         sys.exit(1)
