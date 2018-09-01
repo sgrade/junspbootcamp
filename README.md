@@ -25,3 +25,10 @@ python3 .
 ```
 
 Note: "python3 ." is the same as "python3 \_\_main__.py" 
+
+Note: Last vMX version have a bug influencing behavior of R4 and vrdevice (nodes with 12+ interfaces). 
+It binds ge-0/0/12* to correct bridge, but traffic goes to virbr0 instead of this bridge.  
+Tested with vMX up to 18.2
+This is why I used vMX 17.2 for R4 and vrdevice
+
+* maybe other interfaces as well
