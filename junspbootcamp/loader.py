@@ -10,7 +10,7 @@ from junspbootcamp.tools.disable_unused_interfaces import disable_unused_interfa
 
 
 class Loader:
-    """Modifies and loads config(s) to vMXs"""
+    """Modifies and loads JunOS config(s) to vMXs"""
 
     def __init__(self):
         """Constructor"""
@@ -20,7 +20,6 @@ class Loader:
         self._hosts = parsed_loader_yml.get('hosts')
         self._auth = parsed_loader_yml.get('auth')
         self._user = self._auth.get('user')
-        self._pass = self._auth.get('password')
         self._auth_method = self._auth.get('method')
         if self._auth_method == 'password':
             self._pass = self._auth.get('password')
@@ -53,7 +52,8 @@ class Loader:
         """
         _conf = self._create_base_config(host)
         if _conf:
-            load_cfg_pyez(host, _conf, self._user, self._pass, mode='overwrite')
+            ip = self._hosts.get(host)
+            load_cfg_pyez(ip, _conf, self._user, self._pass, mode='overwrite')
         else:
             return None
 
@@ -64,6 +64,7 @@ class Loader:
         :param str host: hostname of the device
         """
         _lab_conf = create_lab_config(lab, host)
+        ip = self._hosts.get(host)
 
         # Some labs require additional customization
         # We don't know yet if customization is required
@@ -76,28 +77,28 @@ class Loader:
             _lab_conf = customize_lab8_config(_lab_conf)
 
             # loading lab config
-            load_cfg_pyez(host, _lab_conf, self._user, self._pass, mode='merge')
+            load_cfg_pyez(ip, _lab_conf, self._user, self._pass, mode='merge')
 
             # creating additional (custom) config
             configs = ['Rec1.conf', 'Rec3.conf', 'Rec4.conf', 'Rec2.conf']
             _custom_conf = prepare_custom_config(lab, host, configs)
 
             # loading custom config
-            load_cfg_pyez(host, _custom_conf, self._user, self._pass, mode='merge')
+            load_cfg_pyez(ip, _custom_conf, self._user, self._pass, mode='merge')
 
             # load multiping.slax script
-            install_script(lab, host, self._user, self._pass, 'multiping.slax', '/var/db/scripts/op/')
+            install_script(lab, host, ip, self._user, self._pass, 'multiping.slax', '/var/db/scripts/op/')
 
         # No customization required
         else:
-            load_cfg_pyez(host, _lab_conf, self._user, self._pass, mode='merge')
+            load_cfg_pyez(ip, _lab_conf, self._user, self._pass, mode='merge')
 
         # we want only interfaces used in the lab to be used, the rest disabled
         try:
             interfaces_to_use = get_interfaces(_lab_conf)
             if _custom_conf:
                 interfaces_to_use = interfaces_to_use + get_interfaces(_custom_conf)
-            disable_unused_interfaces(host, self._user, self._pass, interfaces_to_use)
+            disable_unused_interfaces(ip, self._user, self._pass, interfaces_to_use)
         except Exception as e:
             print('Cannot disable unused interfaces due to an error, ')
             print('however this is not critical - you can proceed further')

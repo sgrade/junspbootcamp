@@ -1,5 +1,6 @@
 from jnpr.junos import Device
 from jnpr.junos.utils.config import Config
+from jnpr.junos.exception import ConnectError
 
 
 def get_interfaces(config):
@@ -42,14 +43,30 @@ def get_number_of_ports():
                 return int(line.strip().split(' ')[1][:-1])
 
 
-def disable_unused_interfaces(host, _user, _pass, interface_list):
+def disable_unused_interfaces(hostname, username, password, interface_list):
     """ Disables interfaces, which are not used in the lab"""
 
     print("Disabling interfaces, which are not used in the lab")
 
     number_of_ports = get_number_of_ports()
 
-    dev = Device(host).open()
+    # If password is provided in loader.yml
+    if password:
+        try:
+            dev = Device(host=hostname, user=username, password=password, gather_facts=False)
+            dev.open()
+        except ConnectError as err:
+            print("Cannot connect to device: {0}".format(err))
+            return
+    # If password set to False in loader.yml (ssh key is used)
+    else:
+        try:
+            dev = Device(host=hostname, user=username, password=None, gather_facts=False)
+            dev.open()
+        except ConnectError as err:
+            print("Cannot connect to device: {0}".format(err))
+            return
+
     with Config(dev) as cu:
         i = 0
         while i < number_of_ports:

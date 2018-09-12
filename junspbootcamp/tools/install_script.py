@@ -4,7 +4,7 @@ from jnpr.junos.exception import ConnectError
 from .get_config_path import LabConfigHandler
 
 
-def install_script(lab, host, user, password, script, path):
+def install_script(lab, hostname, host_address, username, password, script, path):
     """Loads multiping.slax script (only for lab8 (Multicast))"""
 
     print('Loading', script)
@@ -12,7 +12,7 @@ def install_script(lab, host, user, password, script, path):
     # If password is provided in loader.yml
     if password:
         try:
-            dev = Device(host, user, password, gather_facts=False)
+            dev = Device(host=host_address, user=username, password=password, gather_facts=False)
             dev.open()
         except ConnectError as err:
             print("Cannot connect to device: {0}".format(err))
@@ -20,13 +20,13 @@ def install_script(lab, host, user, password, script, path):
     # If password set to False in loader.yml (ssh key is used)
     else:
         try:
-            dev = Device(host, user, password=None, gather_facts=False)
+            dev = Device(host=host_address, user=username, password=None, gather_facts=False)
             dev.open()
         except ConnectError as err:
             print("Cannot connect to device: {0}".format(err))
             return
 
-    local_path = LabConfigHandler(lab, host).lab_dir
+    local_path = LabConfigHandler(lab, hostname).lab_dir
     f = str(local_path + '/' + script)
     try:
         # Default progress messages
