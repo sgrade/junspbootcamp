@@ -3,7 +3,10 @@
 Automation scipts for Juniper JNCIE-SP Bootcamp 12a labs.
 
 
-Custom lab environment is used: single Linux/KVM server with six vMX virtual machines connected through Linux bridges.
+Custom lab environment is used: single Linux/KVM server with six vMX virtual machines connected through Linux bridges. 
+Requirements: 
+36+ GBytes of RAM
+32+ vCPUs (hyper-threading enabled)
  
 Only vMX virtual machines' configs are provided. __JunOS configs are not provided as they are Juniper's intellectual property__ - get them from the bootcamp package (from Juniper). 
 
